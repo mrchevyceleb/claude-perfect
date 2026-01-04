@@ -97,9 +97,9 @@ Add to your `~/.claude/mcp_settings.json`:
 ┌─────────────────────────────────────────────────────────────┐
 │  STEP 0: Planning Mode Question                             │
 │  ─────────────────────────────────────────────────────────  │
-│  "Would you like to enter planning mode first?"             │
+│  "Would you like me to plan the implementation first?"      │
 │                                                             │
-│  • Yes → Create plan, auto-approve, then proceed            │
+│  • Yes → Inline analysis + plan, then auto-proceed          │
 │  • No  → Skip directly to implementation                    │
 └─────────────────────────────────────────────────────────────┘
                               ↓
@@ -179,19 +179,22 @@ totalScore = functionalityScore + consoleScore + networkScore + uiScore + uxScor
 
 When you run `/perfect`, you'll first be asked:
 
-> "Would you like me to enter planning mode first to design the implementation approach?"
+> "Would you like me to plan the implementation first before starting?"
 
 ### Option 1: "Yes - Plan first"
 
-1. Claude enters planning mode
-2. Reads relevant files to understand codebase
-3. Creates detailed implementation plan:
+Performs **inline planning** (no permission prompts):
+
+1. Analyzes codebase using Glob, Grep, and Read tools
+2. Identifies relevant files and existing patterns
+3. Outputs a structured implementation plan:
    - Files to modify/create
    - Step-by-step approach
    - Edge cases to handle
    - Testing considerations
-4. **Auto-approves** the plan (no waiting)
-5. Proceeds to implementation
+4. **Auto-proceeds** to implementation (no waiting)
+
+**Note:** Does NOT use the `EnterPlanMode` tool (which requires user approval). Instead performs the same thorough analysis inline to maintain the fully automated flow.
 
 **Best for:** Complex features, unfamiliar codebases, architectural decisions
 
@@ -282,7 +285,7 @@ The command auto-detects your framework and starts the dev server accordingly:
 | Port conflicts | Command auto-finds available port |
 | Git push fails | Ensure push access to main branch |
 | Score stuck below 100 | Review remaining issues, fix manually, re-run |
-| Planning mode not working | Ensure `EnterPlanMode` tool is available |
+| Planning mode not working | Planning is now inline - no special tool needed |
 
 ---
 

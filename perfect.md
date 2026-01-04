@@ -29,21 +29,52 @@ If score < 100 and loops remain, **immediately fix issues and re-test**. No user
 **Before doing anything else**, ask the user:
 
 Use the `AskUserQuestion` tool with this question:
-- **Question**: "Would you like me to enter planning mode first to design the implementation approach?"
-- **Option 1**: "Yes - Plan first" (description: "Create a detailed implementation plan, auto-approve it, then start the test-fix loop")
+- **Question**: "Would you like me to plan the implementation first before starting?"
+- **Option 1**: "Yes - Plan first" (description: "Analyze codebase and create implementation plan, then auto-proceed to test-fix loop")
 - **Option 2**: "No - Start immediately" (description: "Skip planning and proceed directly to implementation and testing")
 
 ### IF USER SELECTS "YES - PLAN FIRST":
 
-1. **Enter Planning Mode**: Use the `EnterPlanMode` tool
-2. **Analyze the Task**: Read relevant files and understand the codebase
-3. **Create Implementation Plan**: Write a detailed plan including:
-   - Files that need to be modified/created
-   - Step-by-step implementation approach
-   - Potential edge cases to handle
-   - Testing considerations
-4. **Auto-Approve**: Use `ExitPlanMode` to automatically exit planning mode and proceed
-5. **Continue to STEP 1** below
+**IMPORTANT: Do NOT use `EnterPlanMode` tool - it requires user approval which breaks the auto-flow.**
+
+Instead, perform **inline planning**:
+
+1. **Analyze the Codebase**: Use Glob, Grep, and Read tools to:
+   - Find all relevant files related to the task
+   - Understand existing patterns and architecture
+   - Identify dependencies and imports
+
+2. **Create Implementation Plan**: Output a structured plan:
+   ```
+   ═══════════════════════════════════════════════════════════════════
+                        IMPLEMENTATION PLAN
+   ═══════════════════════════════════════════════════════════════════
+
+   TASK: [the task from arguments]
+
+   FILES TO MODIFY:
+   - [file1] - [what changes]
+   - [file2] - [what changes]
+
+   FILES TO CREATE (if any):
+   - [file] - [purpose]
+
+   IMPLEMENTATION STEPS:
+   1. [Step 1]
+   2. [Step 2]
+   3. [Step 3]
+
+   EDGE CASES TO HANDLE:
+   - [edge case 1]
+   - [edge case 2]
+
+   TESTING CONSIDERATIONS:
+   - [what to verify]
+
+   ═══════════════════════════════════════════════════════════════════
+   ```
+
+3. **Auto-Proceed**: Immediately continue to STEP 1 (no user approval needed)
 
 ### IF USER SELECTS "NO - START IMMEDIATELY":
 
